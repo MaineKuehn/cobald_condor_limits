@@ -24,9 +24,7 @@ if __name__ == '__main__':
         packages=find_packages(),
         # dependencies
         install_requires=[
-            'typing',
-            'pyyaml',
-            'trio',
+            'cobald',
         ],
         # metadata for package search
         license='MIT',
@@ -47,7 +45,7 @@ if __name__ == '__main__':
         ],
         keywords=package_about['__keywords__'],
         # unit tests
-        setup_requires=['pytest-runner'],
-        test_suite='cobald_tests',
-        tests_require=['pytest'],
+        # setup_requires=['pytest-runner'],
+        # test_suite='cobald_tests',
+        # tests_require=['pytest'],
     )
