@@ -1,6 +1,6 @@
 from typing import Union
 
-from cobald.interfaces.pool import Pool
+from cobald.interfaces import Pool
 
 from .adapter import ConcurrencyConstraintView, ConcurrencyUsageView, PoolResources, PoolResourceView
 
