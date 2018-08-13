@@ -10,14 +10,20 @@ class ConcurrencyLimit(Pool):
     Volume of ConcurrencyLimit in a pool
 
     :param resource: the name of the concurrency limit
-    :param pool: the name of the HTCondor pool in which the limit is used
+    :param pool: the hostname of the Collector of the HTCondor pool in which the limit is used
+
+    If ``pool`` is not specified, the pool as defined in the local condor configuration is used.
+    This default should always be sensible if the local host is part of the targeted condor pool.
+
+    Both ``utilisation`` and ``allocation`` are the same.
+    They are the ratio of the currently used limit versus the overall available limit.
     """
     @property
-    def supply(self):
+    def supply(self) -> float:
         return self._constraints[self.resource]
 
     @property
-    def utilisation(self):
+    def utilisation(self) -> float:
         return self._usage[self.resource] / self._constraints[self.resource]
 
     allocation = utilisation
@@ -52,21 +58,21 @@ class ConcurrencyAntiLimit(Pool):
     any of ``"cpus"``, ``"memory"``, ``"disk"`` or ``"machines"`` is understood.
     """
     @property
-    def supply(self):
+    def supply(self) -> float:
         return self.total - self._constraints[self.opponent]
 
     @property
-    def utilisation(self):
+    def utilisation(self) -> float:
         return self._usage[self.resource] / self.supply
 
     allocation = utilisation
 
     @property
-    def demand(self):
+    def demand(self) -> float:
         return self.total - self._constraints[self.opponent]
 
     @demand.setter
-    def demand(self, value):
+    def demand(self, value: float):
         self._constraints[self.opponent] = self.total - value
 
     def __init__(self, resource: str, opponent: str, total: Union[str, float], pool: str = None):
