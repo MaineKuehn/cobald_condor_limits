@@ -1,5 +1,3 @@
-import time
-import logging
 import subprocess
 
 from collections import abc
