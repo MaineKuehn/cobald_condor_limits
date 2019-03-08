@@ -37,6 +37,8 @@ class ConcurrencyConstraintView(CondorPoolView, abc.MutableMapping):
 
     Both monitor and runtime information is available in the ``condor.concurrency_limit`` subchannels.
     """
+    query_type = 'concurrency_limit'
+
     def __init__(self, pool: str = None, max_age: float = 10):
         super().__init__(pool=pool, max_age=max_age, channel_name='condor.concurrency_limit')
 
@@ -90,8 +92,10 @@ class ConcurrencyUsageView(CondorPoolView):
     """
     View on the ConcurrencyLimit as used by jobs in the pool
 
-    Both monitor and runtime information is available in the ``condor.concurrency_limit`` subchannels.
+    Both monitor and runtime information is available in the ``condor.concurrency_usage`` subchannels.
     """
+    query_type = 'concurrency_usage'
+
     def __init__(self, pool: str = None, max_age: float = 10):
         super().__init__(pool=pool, max_age=max_age, channel_name='condor.concurrency_usage')
 
@@ -137,6 +141,8 @@ class PoolResources(CondorPoolView):
     ``"machines"``
         Number of distinct machines, as identified by their hostname.
     """
+    query_type = 'pool_resources'
+
     def __init__(self, pool: str = None, max_age: float = 30):
         super().__init__(pool=pool, max_age=max_age, channel_name='condor.pool_resources')
 

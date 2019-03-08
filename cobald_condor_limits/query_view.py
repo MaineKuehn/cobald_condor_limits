@@ -16,6 +16,8 @@ class CondorPoolView(abc.Mapping):
     :param channel_name: trailing name for ``runtime`` and ``monitor`` channels
     :param monitor_identifier: identifier used for monitoring messages
     """
+    query_type = None
+
     def __init__(self, pool: str = None, max_age: float = 10, channel_name: str = 'condor_query'):
         self.pool = pool
         self.max_age = max_age
@@ -38,14 +40,14 @@ class CondorPoolView(abc.Mapping):
 
     def _try_refresh(self):
         if self._valid_date < time.time():
-            self._runtime_log.debug('Querying pool %r ...', self.pool)
+            self._runtime_log.debug('Querying pool %r for %s ...', self.pool, self.query_type)
             try:
                 data = self._query_data()
             except QueryError:
-                self._runtime_log.exception('Querying pool %r failed', self.pool)
+                self._runtime_log.exception('Querying pool %r for %s failed', self.pool, self.query_type)
             else:
-                self._runtime_log.debug('Querying pool %r result: %s', self.pool, data)
-                self._monitor_log.info('condor_query', {**data, 'pool': self.pool})
+                self._runtime_log.debug('Querying pool %r for %s result: %s', self.pool, self.query_type, data)
+                self._monitor_log.info('condor_query', {**data, '__pool__': self.pool, '__type__': self.query_type})
                 self._data = data
                 self._valid_date = self.max_age + time.time()
 
