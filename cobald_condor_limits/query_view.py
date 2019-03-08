@@ -44,7 +44,7 @@ class CondorPoolView(abc.Mapping):
             except QueryError:
                 self._runtime_log.exception('Querying pool %r failed', self.pool)
             else:
-                self._monitor_log.info('condor_query', {**data, 'pool': self.pool})
+                self._monitor_log.debug('Querying pool %r result: %s', self.pool, data)
                 self._data = data
                 self._valid_date = self.max_age + time.time()
 
