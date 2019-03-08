@@ -38,10 +38,11 @@ class CondorPoolView(abc.Mapping):
 
     def _try_refresh(self):
         if self._valid_date < time.time():
+            self._runtime_log.debug('Querying pool %r ...', self.pool)
             try:
                 data = self._query_data()
             except QueryError:
-                self._runtime_log.exception('Query to pool %r failed' % self.pool)
+                self._runtime_log.exception('Querying pool %r failed', self.pool)
             else:
                 self._monitor_log.info('condor_query', {**data, 'pool': self.pool})
                 self._data = data
